@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 
-const productSchema = new Schema({
+const productSchema = new Schema<IProduct>({
   name: { type: String, required: true, trim: true },
   brand: { type: String, required: true, trim: true },
   price: {
@@ -10,6 +10,7 @@ const productSchema = new Schema({
   },
   type: {
     type: String,
+    required: true,
     trim: true,
     enum: ["Mountain", "Road", "Hybrid", "BMX", "Electric"],
   },
@@ -22,5 +23,5 @@ const productSchema = new Schema({
   inStock: { type: Boolean, required: true, default: true },
 });
 
-const Product = model("Product", productSchema);
+const Product = model<IProduct>("Product", productSchema);
 export default Product;
