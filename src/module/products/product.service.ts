@@ -10,7 +10,6 @@ const getProduct = async () => {
   return result;
 };
 const getSingleProduct = async (id: string) => {
-    // const id = req.params;
   const result = await Product.findById(id);
   return result;
 };

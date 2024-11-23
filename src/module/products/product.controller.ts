@@ -35,8 +35,8 @@ const getProduct = async (req: Request, res: Response) => {
 };
 const getSingleProduct = async (req: Request, res: Response) => {
   try {
-    // const id = req.params;
-    const result = await userService.getSingleProduct();
+    const productId = req.params.productId;
+    const result = await userService.getSingleProduct(productId);
     res.json({
       message: "Product retrieve successfull",
       data: result,
