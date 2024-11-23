@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Product from "./product.model";
+import IProduct from "./product.interface";
 
 const createProduct = async (payload: IProduct):Promise<IProduct> => {
   const result = await Product.create(payload);
