@@ -33,6 +33,7 @@ const getProduct = async (req: Request, res: Response) => {
     });
   }
 };
+
 const getSingleProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.productId;
@@ -49,9 +50,47 @@ const getSingleProduct = async (req: Request, res: Response) => {
     });
   }
 };
+const updateProduct = async (req: Request, res: Response) => {
+  try {
+    const productId = req.params.productId;
+    const data = req.body;
+    const result = await userService.updateProduct(productId,data);
+    res.json({
+      message: "Product update successfull",
+      data: result,
+    });
+  } catch (error) {
+    res.json({
+      status: false,
+      message: "Product update failed!",
+      error,
+    });
+  }
+};
+
+
+const deleteProduct = async (req: Request, res: Response) => {
+  try {
+    const productId = req.params.productId;
+    const result = await userService.deleteProduct(productId);
+    res.json({
+      message: "Product delete successfull",
+      data: {},
+    });
+  } catch (error) {
+    res.json({
+      status: false,
+      message: "Delete Failed",
+      error,
+    });
+  }
+};
+
 
 export const productController = {
   createProduct,
   getProduct,
   getSingleProduct,
+  updateProduct,
+  deleteProduct,
 };
