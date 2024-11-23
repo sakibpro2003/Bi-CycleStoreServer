@@ -18,6 +18,7 @@ const createProduct = async (req: Request, res: Response) => {
     });
   }
 };
+
 const getProduct = async (req: Request, res: Response) => {
   try {
     const result = await userService.getProduct();
