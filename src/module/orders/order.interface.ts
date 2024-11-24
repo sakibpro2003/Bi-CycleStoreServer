@@ -1,8 +1,12 @@
-interface IOrder{
-    email: string,
-    product: string,
-    quantity: number,
-    totalPrice: number,
+import { Types } from "mongoose";
+
+interface IOrder {
+  email: string;
+  product: Types.ObjectId;
+  quantity: number;
+  totalPrice: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export default IOrder;

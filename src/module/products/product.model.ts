@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import { Collection, model, Schema } from "mongoose";
 import IProduct from "./product.interface";
 const productSchema = new Schema<IProduct>(
   {
@@ -10,7 +10,7 @@ const productSchema = new Schema<IProduct>(
       min: [0, "Price must be a positive number"],
     },
     type: {
-      type: String,
+      type:Schema.Types.ObjectId,
       required: true,
       trim: true,
       enum: ["Mountain", "Road", "Hybrid", "BMX", "Electric"],
@@ -28,8 +28,12 @@ const productSchema = new Schema<IProduct>(
       createdAt: "created_at", // Custom name for createdAt
       updatedAt: "updated_at", // Custom name for updatedAt
     },
-  }
+    collection: "Products",
+  },
+  
 );
+// db.getCollectionNames()
+
 
 const Product = model<IProduct>("Product", productSchema);
 export default Product;
