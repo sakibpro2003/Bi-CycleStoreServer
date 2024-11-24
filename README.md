@@ -1,4 +1,4 @@
-Bike Shop Management System
+#Bike Shop Management System
 A comprehensive Bike Shop Management System for managing product inventory, processing customer orders, and calculating total revenue. This project is built with Node.js, Express.js, and MongoDB using Mongoose for object data modeling.
 
 Table of Contents
