@@ -16,7 +16,7 @@ const productSchema = new Schema<IProduct>(
       trim: true,
       enum: {
         values: ["Mountain", "Road", "Hybrid", "BMX", "Electric"],
-        message: "{VALUE} is not a valid product type." // Custom error message
+        message: "{VALUE} is not a valid product type."
       }
     },
     description: { type: String, required: true, trim: true },

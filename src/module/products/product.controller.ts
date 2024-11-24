@@ -42,7 +42,6 @@ const getSingleProduct = async (req: Request, res: Response):Promise<any> => {
     const result = await userService.getSingleProduct(productId);
 
     if (!result) {
-      // If no product is found, send a not found message
       return res.status(404).json({
         status: false,
         message: "Bike not found",
@@ -68,7 +67,7 @@ const updateProduct = async (req: Request, res: Response):Promise<any> => {
     const productToUpdate = req.params.productId;
     const resultToUpdate = await userService.getSingleProduct(productToUpdate);
     if (!resultToUpdate) {
-      // If no product is found, send a not found message
+     
       return res.status(404).json({
         status: false,
         message: "Bike not found",

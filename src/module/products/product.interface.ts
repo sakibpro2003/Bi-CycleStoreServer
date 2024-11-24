@@ -4,7 +4,6 @@ interface IProduct extends Document {
   brand: string;
   price: number;
   type: string;
-  // type: Types.ObjectId;
   description: string;
   quantity: number;
   inStock: boolean;
