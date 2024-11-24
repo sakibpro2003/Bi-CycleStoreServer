@@ -11,7 +11,7 @@ const productSchema = new Schema<IProduct>(
       min: [0, "Price must be a positive number"],
     },
     type: {
-      type: String, // Corrected from ObjectId to String
+      type: String, 
       required: true,
       trim: true,
       enum: {
@@ -29,8 +29,8 @@ const productSchema = new Schema<IProduct>(
   },
   {
     timestamps: {
-      createdAt: "created_at", // Custom name for createdAt
-      updatedAt: "updated_at", // Custom name for updatedAt
+      createdAt: "created_at",
+      updatedAt: "updated_at", 
     },
     collection: "Products",
   }

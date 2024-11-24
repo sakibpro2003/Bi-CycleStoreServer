@@ -36,25 +36,7 @@ const getProduct = async (req: Request, res: Response) => {
     });
   }
 };
-
-// const getSingleProduct = async (req: Request, res: Response) => {
-//   try {
-//     const productId = req.params.productId;
-//     const result = await userService.getSingleProduct(productId);
-//     res.json({
-//       message: "Bicycles retrieved successfully",
-//       status: true,
-//       data: result,
-//     });
-//   } catch (error) {
-//     res.json({
-//       status: false,
-//       message: "somthing went wrong",
-//       error,
-//     });
-//   }
-// };
-const getSingleProduct = async (req: Request, res: Response) => {
+const getSingleProduct = async (req: Request, res: Response):Promise<any> => {
   try {
     const productId = req.params.productId;
     const result = await userService.getSingleProduct(productId);
@@ -81,7 +63,7 @@ const getSingleProduct = async (req: Request, res: Response) => {
   }
 };
 
-const updateProduct = async (req: Request, res: Response) => {
+const updateProduct = async (req: Request, res: Response):Promise<any> => {
   try {
     const productToUpdate = req.params.productId;
     const resultToUpdate = await userService.getSingleProduct(productToUpdate);
@@ -107,8 +89,6 @@ const updateProduct = async (req: Request, res: Response) => {
     });
   }
 };
-
-
 const deleteProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.productId;

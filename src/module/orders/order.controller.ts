@@ -2,20 +2,22 @@ import { Request, Response } from "express";
 import { orderService } from "./order.service";
 
 const createOrder = async (req: Request, res: Response) => {
-  try{
+  try {
     const payload = req.body;
-  const result = await orderService.createOrder(payload);
-  res.json({
-    message: "Order created successfully",
-    status: true,
-    data: result,
-  });
-  }catch(error){
+    const result = await orderService.createOrder(payload);
     res.json({
-        message: "Order created failed",
-        status: false,
-        data: error,
-      });
+      message: "Order created successfully",
+      status: true,
+      data: result,
+    });
+  } catch (error) {
+    // Check if error is an instance of Error and set appropriate response
+    const errorMessage = error instanceof Error ? error.message : "Something went wrong";
+    res.json({
+      message: "Order creation failed",
+      status: false,
+      data: errorMessage,
+    });
   }
 };
 
@@ -35,9 +37,7 @@ const getRevenue = async (req: Request, res: Response) => {
     });
   }
 };
-
-
 export const orderController = {
-    createOrder,
-    getRevenue
-}
+  createOrder,
+  getRevenue,
+};

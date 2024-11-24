@@ -1,32 +1,38 @@
+import Product from "../products/product.model";
 import { userService } from "../products/product.service";
 import IOrder from "./order.interface";
 import Order from "./order.model";
 
+
 const createOrder = async (payload: IOrder): Promise<IOrder> => {
   const { product, quantity } = payload;
+
+  // Check if product exists
+  const productInStock = await Product.findById(product);
+  if (!productInStock) {
+    throw new Error("Product not found");
+  }
+
+  // Check if the order quantity is available in stock
+  if (productInStock.quantity < quantity) {
+    throw new Error("Insufficient stock available for the requested quantity");
+  }
+
+  // Update the inventory by reducing the stock
   await userService.updateInventory(product, quantity);
+  
+  // Create the order after inventory is updated
   const result = await Order.create(payload);
   return result;
 };
 
-// const calculateRevenue = async (): Promise<number> => {
-//     const result = await Order.aggregate([
-//       {
-//         $project: {
-//           totalPrice: { $multiply: ["$price", "$quantity"] },
-//         },
-//       },
-//       {
-//         $group: {
-//           _id: null,
-//           totalRevenue: { $sum: "$totalPrice" },
-//         },
-//       },
-//     ]);
+// const createOrder = async (payload: IOrder): Promise<IOrder> => {
+//   const { product, quantity } = payload;
+//   await userService.updateInventory(product, quantity);
   
-//     // If there are no orders, result will be an empty array
-//     return result.length > 0 ? result[0].totalRevenue : 0;
-//   };
+//   const result = await Order.create(payload);
+//   return result;
+// };
 const calculateRevenue = async (): Promise<{ totalRevenue: number }> => {
   const result = await Order.aggregate([
     {
@@ -63,7 +69,6 @@ const calculateRevenue = async (): Promise<{ totalRevenue: number }> => {
 
   return result.length > 0 ? result[0] : { totalRevenue: 0 }; // Default to 0 if no data
 };
-
 export const orderService = {
   createOrder,
   calculateRevenue

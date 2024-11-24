@@ -10,7 +10,6 @@ interface IProduct extends Document {
   inStock: boolean;
   createdAt?: Date;
   updatedAt?: Date; 
-
 }
 export default IProduct;
 

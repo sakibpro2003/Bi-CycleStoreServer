@@ -1,0 +1,335 @@
+import { Request, Response } from "express";
+import { orderService } from "./order.service";
+
+const createOrder = async (req: Request, res: Response) => {
+  try {
+    const payload = req.body;
+    const result = await orderService.createOrder(payload);
+    res.json({
+      message: "Order created successfully",
+      status: true,
+      data: result,
+    });
+  } catch (error) {
+    res.json({
+      message: "Order created failed",
+      status: false,
+      data: error,
+    });
+  }
+};
+const getRevenue = async (req: Request, res: Response) => {
+  try {
+    const revenue = await orderService.calculateRevenue();
+    res.json({
+      message: "Revenue calculated successfully",
+      status: true,
+      data: { revenue },
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      message: "Failed to calculate revenue",
+      status: false,
+      error: error.message,
+    });
+  }
+};
+export const orderController = {
+  createOrder,
+  getRevenue,
+};
+order.controller.ts
+
+import { model, Schema, Types } from "mongoose";
+import IOrder from "./order.interface";
+const orderSchema = new Schema<IOrder>(
+  {
+    email: { type: String, required: true },
+    product: { type: String },
+    // product: { type: Types.ObjectId, ref: "Product", required: true },
+    quantity: { type: Number, required: true },
+    totalPrice: { type: Number, required: true },
+  },
+  {
+    timestamps: {
+      createdAt: "created_at", 
+      updatedAt: "updated_at", 
+    },
+  }
+);
+
+const Order = model<IOrder>("Order", orderSchema);
+export default Order;
+order.model.ts
+
+import { userService } from "../products/product.service";
+import IOrder from "./order.interface";
+import Order from "./order.model";
+
+const createOrder = async (payload: IOrder): Promise<IOrder> => {
+  const { product, quantity } = payload;
+  await userService.updateInventory(product, quantity);
+  
+  const result = await Order.create(payload);
+  return result;
+};
+const calculateRevenue = async (): Promise<{ totalRevenue: number }> => {
+  const result = await Order.aggregate([
+    {
+      $lookup: {
+        from: "Products", // Matches the defined collection name in product model
+        localField: "product", // Matches the product field in orders
+        foreignField: "_id", // The _id field in Products collection
+        as: "productDetails",
+      },
+    },
+    {
+      $unwind: "$productDetails", // Flatten productDetails array
+    },
+    {
+      $project: {
+        totalPrice: {
+          $multiply: ["$quantity", "$productDetails.price"], // price * quantity
+        },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        totalRevenue: { $sum: "$totalPrice" }, // Sum totalPrice across orders
+      },
+    },
+    {
+      $project: {
+        _id: 0, // Exclude _id
+        totalRevenue: 1,
+      },
+    },
+  ]);
+
+  return result.length > 0 ? result[0] : { totalRevenue: 0 }; // Default to 0 if no data
+};
+export const orderService = {
+  createOrder,
+  calculateRevenue
+};
+order.service.ts
+
+import { Request, Response } from "express";
+import Product from "./product.model";
+import { userService } from "./product.service";
+
+const createProduct = async (req: Request, res: Response) => {
+  try {
+    const payload = req.body;
+    const result = await userService.createProduct(payload);
+    res.json({
+      message: "success fully create",
+      data: result,
+    });
+  } catch (error) {
+    res.json({
+      status: false,
+      message: "somthing went wrong",
+      error,
+      
+    });
+  }
+};
+
+const getProduct = async (req: Request, res: Response) => {
+  try {
+    const result = await userService.getProduct();
+    res.json({
+      message: "Bicycles retrieved successfully",
+      status: true,
+      data: result,
+    });
+  } catch (error) {
+    res.json({
+      status: false,
+      message: "somthing went wrong",
+      error,
+    });
+  }
+};
+const getSingleProduct = async (req: Request, res: Response):Promise<any> => {
+  try {
+    const productId = req.params.productId;
+    const result = await userService.getSingleProduct(productId);
+
+    if (!result) {
+      // If no product is found, send a not found message
+      return res.status(404).json({
+        status: false,
+        message: "Bike not found",
+      });
+    }
+
+    res.json({
+      message: "Bicycle retrieved successfully",
+      status: true,
+      data: result,
+    });
+  } catch (error:any) {
+    res.status(500).json({
+      status: false,
+      message: "Something went wrong",
+      error: error.message || error,
+    });
+  }
+};
+
+const updateProduct = async (req: Request, res: Response):Promise<any> => {
+  try {
+    const productToUpdate = req.params.productId;
+    const resultToUpdate = await userService.getSingleProduct(productToUpdate);
+    if (!resultToUpdate) {
+      // If no product is found, send a not found message
+      return res.status(404).json({
+        status: false,
+        message: "Bike not found",
+      });
+    }
+    const productId = req.params.productId;
+    const data = req.body;
+    const result = await userService.updateProduct(productId,data);
+    res.json({
+      message: "Bicycle updated successfully",
+      data: result,
+    });
+  } catch (error) {
+    res.json({
+      status: false,
+      message: "Product update failed!",
+      error,
+    });
+  }
+};
+const deleteProduct = async (req: Request, res: Response) => {
+  try {
+    const productId = req.params.productId;
+    const result = await userService.deleteProduct(productId);
+    res.json({
+      message: "Bicycle deleted successfully",
+      status: true,
+      data: {},
+    });
+  } catch (error) {
+    res.json({
+      status: false,
+      message: "Delete Failed",
+      error,
+    });
+  }
+};
+
+
+export const productController = {
+  createProduct,
+  getProduct,
+  getSingleProduct,
+  updateProduct,
+  deleteProduct,
+};
+product.controller.ts
+import { model, Schema } from "mongoose";
+import IProduct from "./product.interface";
+
+const productSchema = new Schema<IProduct>(
+  {
+    name: { type: String, required: true, trim: true },
+    brand: { type: String, required: true, trim: true },
+    price: {
+      type: Number,
+      required: true,
+      min: [0, "Price must be a positive number"],
+    },
+    type: {
+      type: String, 
+      required: true,
+      trim: true,
+      enum: {
+        values: ["Mountain", "Road", "Hybrid", "BMX", "Electric"],
+        message: "{VALUE} is not a valid product type." // Custom error message
+      }
+    },
+    description: { type: String, required: true, trim: true },
+    quantity: {
+      type: Number,
+      required: true,
+      min: [0, "Quantity must be a positive number"],
+    },
+    inStock: { type: Boolean, required: true, default: true },
+  },
+  {
+    timestamps: {
+      createdAt: "created_at",
+      updatedAt: "updated_at", 
+    },
+    collection: "Products",
+  }
+);
+
+const Product = model<IProduct>("Product", productSchema);
+export default Product;
+product.model.ts
+import { Request, Response } from "express";
+import Product from "./product.model";
+import IProduct from "./product.interface";
+
+const updateInventory = async (id: string, quantityOrdered: number) => {
+  const product = await Product.findById(id);
+
+  if (!product) {
+    throw new Error("Product not found");
+  }
+
+  if (product.quantity < quantityOrdered) {
+    throw new Error("Insufficient stock available");
+  }
+
+  product.quantity -= quantityOrdered;
+
+  if (product.quantity === 0) {
+    product.inStock = false;
+  }
+
+  await product.save();
+  return product;
+};
+
+const createProduct = async (payload: IProduct): Promise<IProduct> => {
+  const result = await Product.create(payload);
+  return result;
+};
+const getProduct = async () => {
+  const result = await Product.find();
+  return result;
+};
+const getSingleProduct = async (id: string) => {
+  const result = await Product.findById(id);
+  return result;
+};
+const updateProduct = async (id: string, data: IProduct) => {
+  const result = await Product.findByIdAndUpdate(id, data, {
+    new: true,
+  });
+
+  return result;
+};
+const deleteProduct = async (id: string) => {
+  const result = await Product.findByIdAndDelete(id);
+  return result;
+};
+
+export const userService = {
+  createProduct,
+  getProduct,
+  getSingleProduct,
+  updateProduct,
+  deleteProduct,
+  updateInventory,
+};
+product.service.ts
+

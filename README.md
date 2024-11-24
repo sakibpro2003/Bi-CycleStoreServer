@@ -1,6 +1,6 @@
-# Bike Shop Management System
+# Bi-Cycle Shop Management System
 
-A comprehensive **Bike Shop Management System** for managing product inventory, processing customer orders, and calculating total revenue. This project is built with **Node.js**, **Express.js**, and **MongoDB** using **Mongoose** for object data modeling.
+A comprehensive **Bi-Cycle Shop Management System** for managing product inventory, processing customer orders, and calculating total revenue. This project is built with **Node.js**, **Express.js**, and **MongoDB** using **Mongoose** for object data modeling.
 
 ## Table of Contents
 
@@ -16,16 +16,16 @@ A comprehensive **Bike Shop Management System** for managing product inventory, 
 
 ## Project Overview
 
-The **Bike Shop Management System** is designed to manage a bike shop’s product catalog and customer orders. Key functionalities include:
+The **Bi-Cycle Shop Management System** is designed to manage a Bi-Cycle shop’s product catalog and customer orders. Key functionalities include:
 
-- **Product Management**: Admins can manage different bike products in the shop’s inventory.
+- **Product Management**: Admins can manage different Bi-Cycle products in the shop’s inventory.
 - **Order Management**: Customers can place orders, which track the quantity and total cost of products.
-- **Revenue Calculation**: The system calculates the total revenue by multiplying the quantity of bikes ordered by their price.
+- **Revenue Calculation**: The system calculates the total revenue by multiplying the quantity of Bi-Cycles ordered by their price.
 
 ## Features
 
 ### Product Management:
-- Add, update, and list bikes available for sale.
+- Add, update, and list Bi-Cycles available for sale.
 - Store details like price, description, quantity, and stock status.
 
 ### Order Management:
@@ -66,8 +66,8 @@ Follow these steps to set up the project locally:
 
 1. Clone the repository to your local machine:
     ```bash
-    git clone https://github.com/yourusername/bike-shop-management.git
-    cd bike-shop-management
+    git clone https://github.com/yourusername/Bi-Cycle-shop-management.git
+    cd Bi-Cycle-shop-management
     ```
 
 2. Install dependencies:
@@ -85,7 +85,7 @@ Follow these steps to set up the project locally:
     npm start
     ```
 
-   This will run the application on `http://localhost:3000`.
+   This will run the application on `http://localhost:5000`.
 
 ## Configuration
 
@@ -94,216 +94,6 @@ Modify the `MONGO_URI` in the `.env` file to point to your MongoDB instance. You
 ```plaintext
 MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/Bi-Cycle?retryWrites=true&w=majority
 
-
-# API Endpoints - Bike Shop Management System
-
-## Base URL: 
-`http://localhost:3000/api`
-
-## Endpoints
-
-### 1. **Create Order**
-- **Endpoint**: `POST /api/orders`
-- **Description**: Creates a new order for a customer.
-- **Request Body**:
-    ```json
-    {
-      "email": "customer@example.com",
-      "product": "<product_id>",
-      "quantity": 2
-    }
-    ```
-- **Response**:
-    ```json
-    {
-      "message": "Order created successfully",
-      "status": true,
-      "data": {
-        "_id": "<order_id>",
-        "email": "customer@example.com",
-        "product": "<product_id>",
-        "quantity": 2,
-        "totalPrice": 2599.98
-      }
-    }
-    ```
-
----
-
-### 2. **Calculate Total Revenue**
-- **Endpoint**: `GET /api/orders/revenue`
-- **Description**: Calculates the total revenue generated from all orders.
-- **Response**:
-    ```json
-    {
-      "message": "Revenue calculated successfully",
-      "status": true,
-      "data": {
-        "totalRevenue": 2599.98
-      }
-    }
-    ```
-
----
-
-### 3. **Get All Products**
-- **Endpoint**: `GET /api/products`
-- **Description**: Retrieves a list of all products available in the shop.
-- **Response**:
-    ```json
-    [
-      {
-        "_id": "<product_id>",
-        "name": "Mountain Explorer",
-        "brand": "TrailMasters",
-        "price": 1299.99,
-        "type": "Mountain",
-        "description": "A rugged mountain bike perfect for off-road adventures.",
-        "quantity": 15,
-        "inStock": true
-      }
-    ]
-    ```
-
----
-
-### 4. **Get Product by ID**
-- **Endpoint**: `GET /api/products/:id`
-- **Description**: Retrieves detailed information about a specific product by its ID.
-- **Response**:
-    ```json
-    {
-      "_id": "<product_id>",
-      "name": "Mountain Explorer",
-      "brand": "TrailMasters",
-      "price": 1299.99,
-      "type": "Mountain",
-      "description": "A rugged mountain bike perfect for off-road adventures.",
-      "quantity": 15,
-      "inStock": true
-    }
-    ```
-
----
-
-### 5. **Update Product**
-- **Endpoint**: `PUT /api/products/:id`
-- **Description**: Updates an existing product's details.
-- **Request Body**:
-    ```json
-    {
-      "name": "Mountain Explorer Pro",
-      "brand": "TrailMasters",
-      "price": 1399.99,
-      "quantity": 20,
-      "inStock": true
-    }
-    ```
-- **Response**:
-    ```json
-    {
-      "message": "Product updated successfully",
-      "status": true,
-      "data": {
-        "_id": "<product_id>",
-        "name": "Mountain Explorer Pro",
-        "brand": "TrailMasters",
-        "price": 1399.99,
-        "quantity": 20,
-        "inStock": true
-      }
-    }
-    ```
-
----
-
-### 6. **Delete Product**
-- **Endpoint**: `DELETE /api/products/:id`
-- **Description**: Deletes a product from the shop's inventory.
-- **Response**:
-    ```json
-    {
-      "message": "Product deleted successfully",
-      "status": true
-    }
-    ```
-
----
-
-### 7. **Get All Orders**
-- **Endpoint**: `GET /api/orders`
-- **Description**: Retrieves a list of all orders placed by customers.
-- **Response**:
-    ```json
-    [
-      {
-        "_id": "<order_id>",
-        "email": "customer@example.com",
-        "product": "<product_id>",
-        "quantity": 2,
-        "totalPrice": 2599.98
-      }
-    ]
-    ```
-
----
-
-### 8. **Get Order by ID**
-- **Endpoint**: `GET /api/orders/:id`
-- **Description**: Retrieves details of a specific order by its ID.
-- **Response**:
-    ```json
-    {
-      "_id": "<order_id>",
-      "email": "customer@example.com",
-      "product": "<product_id>",
-      "quantity": 2,
-      "totalPrice": 2599.98
-    }
-    ```
-
----
-
-### 9. **Update Order**
-- **Endpoint**: `PUT /api/orders/:id`
-- **Description**: Updates an existing order, including product or quantity.
-- **Request Body**:
-    ```json
-    {
-      "email": "customer@example.com",
-      "product": "<product_id>",
-      "quantity": 3
-    }
-    ```
-- **Response**:
-    ```json
-    {
-      "message": "Order updated successfully",
-      "status": true,
-      "data": {
-        "_id": "<order_id>",
-        "email": "customer@example.com",
-        "product": "<product_id>",
-        "quantity": 3,
-        "totalPrice": 3899.97
-      }
-    }
-    ```
-
----
-
-### 10. **Delete Order**
-- **Endpoint**: `DELETE /api/orders/:id`
-- **Description**: Deletes an order from the system.
-- **Response**:
-    ```json
-    {
-      "message": "Order deleted successfully",
-      "status": true
-    }
-    ```
-
----
 
 ## Notes:
 - Replace `<product_id>`, `<order_id>` with actual product/order IDs in the request and response data.
