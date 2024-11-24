@@ -3,8 +3,8 @@ interface IProduct extends Document {
   name: string;
   brand: string;
   price: number;
-  // type: string;
-  type: Types.ObjectId;
+  type: string;
+  // type: Types.ObjectId;
   description: string;
   quantity: number;
   inStock: boolean;

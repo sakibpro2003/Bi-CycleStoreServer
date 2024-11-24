@@ -1,5 +1,6 @@
-import { Collection, model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import IProduct from "./product.interface";
+
 const productSchema = new Schema<IProduct>(
   {
     name: { type: String, required: true, trim: true },
@@ -10,10 +11,13 @@ const productSchema = new Schema<IProduct>(
       min: [0, "Price must be a positive number"],
     },
     type: {
-      type:Schema.Types.ObjectId,
+      type: String, // Corrected from ObjectId to String
       required: true,
       trim: true,
-      enum: ["Mountain", "Road", "Hybrid", "BMX", "Electric"],
+      enum: {
+        values: ["Mountain", "Road", "Hybrid", "BMX", "Electric"],
+        message: "{VALUE} is not a valid product type." // Custom error message
+      }
     },
     description: { type: String, required: true, trim: true },
     quantity: {
@@ -29,11 +33,8 @@ const productSchema = new Schema<IProduct>(
       updatedAt: "updated_at", // Custom name for updatedAt
     },
     collection: "Products",
-  },
-  
+  }
 );
-// db.getCollectionNames()
-
 
 const Product = model<IProduct>("Product", productSchema);
 export default Product;

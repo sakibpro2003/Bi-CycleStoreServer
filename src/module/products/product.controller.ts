@@ -15,6 +15,7 @@ const createProduct = async (req: Request, res: Response) => {
       status: false,
       message: "somthing went wrong",
       error,
+      
     });
   }
 };
@@ -36,25 +37,61 @@ const getProduct = async (req: Request, res: Response) => {
   }
 };
 
+// const getSingleProduct = async (req: Request, res: Response) => {
+//   try {
+//     const productId = req.params.productId;
+//     const result = await userService.getSingleProduct(productId);
+//     res.json({
+//       message: "Bicycles retrieved successfully",
+//       status: true,
+//       data: result,
+//     });
+//   } catch (error) {
+//     res.json({
+//       status: false,
+//       message: "somthing went wrong",
+//       error,
+//     });
+//   }
+// };
 const getSingleProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.productId;
     const result = await userService.getSingleProduct(productId);
+
+    if (!result) {
+      // If no product is found, send a not found message
+      return res.status(404).json({
+        status: false,
+        message: "Bike not found",
+      });
+    }
+
     res.json({
-      message: "Bicycles retrieved successfully",
+      message: "Bicycle retrieved successfully",
       status: true,
       data: result,
     });
-  } catch (error) {
-    res.json({
+  } catch (error:any) {
+    res.status(500).json({
       status: false,
-      message: "somthing went wrong",
-      error,
+      message: "Something went wrong",
+      error: error.message || error,
     });
   }
 };
+
 const updateProduct = async (req: Request, res: Response) => {
   try {
+    const productToUpdate = req.params.productId;
+    const resultToUpdate = await userService.getSingleProduct(productToUpdate);
+    if (!resultToUpdate) {
+      // If no product is found, send a not found message
+      return res.status(404).json({
+        status: false,
+        message: "Bike not found",
+      });
+    }
     const productId = req.params.productId;
     const data = req.body;
     const result = await userService.updateProduct(productId,data);
