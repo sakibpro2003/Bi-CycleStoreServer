@@ -1,19 +1,23 @@
 import express, { Request, Response } from "express";
-import productRouter from "./module/products/product.router";
-import orderRouter from "./module/orders/order.router";
+import router from "./app/routes";
+import notFound from "./app/middlewares/notFound";
+
 const app = express();
 
 app.use(express.json());
-//Product related routes
-app.use("/api/products", productRouter);
 
-//Order related routes
-app.use("/api/orders", orderRouter);
+// API Routes
+app.use("/api", router);
 
+// 404 Not Found Middleware
+app.use("*", notFound); // ✅ Fix applied here
+
+// Root Route
 app.get("/", (req: Request, res: Response) => {
   res.send({
     status: true,
-    message: "server running from",
+    message: "Server running",
   });
 });
+
 export default app;
