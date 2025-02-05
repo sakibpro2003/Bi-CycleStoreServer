@@ -10,7 +10,7 @@ app.use(express.json());
 app.use("/api", router);
 
 // 404 Not Found Middleware
-app.use("*", notFound); // ✅ Fix applied here
+app.use("*", notFound); 
 
 // Root Route
 app.get("/", (req: Request, res: Response) => {
