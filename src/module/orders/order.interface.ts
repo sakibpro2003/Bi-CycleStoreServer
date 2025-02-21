@@ -1,6 +1,8 @@
 import { Types } from "mongoose";
 
 export type TOrder = {
+  address:string,
+  phone:string,
   userId: Types.ObjectId;
   products: { productId: Types.ObjectId };
   totalPrice: number;

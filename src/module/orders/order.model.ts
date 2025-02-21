@@ -6,14 +6,21 @@ const OrderSchema = new Schema<TOrder>(
   {
     quantity: {
       type: Number,
+      required:true
+    },
+    address: {
+      type: String,
+    },
+    phone:{
+      type:String,
     },
     products: {
       type: Schema.Types.ObjectId,
-      ref: "Products",
+      ref: "Product",
     },
     userId: {
       type: Schema.Types.ObjectId,
-      ref: "users",
+      ref: "User",
     },
     totalPrice: {
       type: Number,

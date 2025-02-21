@@ -4,6 +4,7 @@ import Product from "../products/product.model";
 import Order from "./order.model";
 import { User } from "../User/user.model";
 import { OrderPayload } from "../../types/OrderPayloadTypes";
+import { ObjectId } from "mongoose";
 
 const createOrder = async (payload: OrderPayload) => {
   if (!payload?.products?.length) {
@@ -13,17 +14,13 @@ const createOrder = async (payload: OrderPayload) => {
   const getProductId = payload.products;
   const payloadQuantity = payload.quantity;
   const paymentMethod = payload.paymentMethod;
+  const phone = payload.phone;
+  const address = payload.address;
   const getProduct = await Product.findById(getProductId);
   if (!getProduct) {
     throw new AppError(httpStatus.NOT_FOUND, "Product not found");
   }
 
-  // if (typeof getProduct.quantity !== "number") {
-  //   throw new AppError(
-  //     httpStatus.INTERNAL_SERVER_ERROR,
-  //     "Product quantity is missing or invalid"
-  //   );
-  // }
   const availableQuantity = getProduct?.quantity as Number;
   if (payloadQuantity > availableQuantity) {
     throw new AppError(
@@ -38,6 +35,8 @@ const createOrder = async (payload: OrderPayload) => {
     totalPrice: payload.totalPrice,
     quantity: payload.quantity,
     paymentMethod: paymentMethod,
+    phone: payload.phone,
+    address: payload.address,
   });
 
   if (getProduct) {
@@ -52,12 +51,14 @@ const createOrder = async (payload: OrderPayload) => {
   return order;
 };
 
-// const getOrders = async () => {
-//   const orders = await Order.find().populate("user").populate("products.product");
-//   return orders;
-// };
+const getOrders = async (userId:ObjectId) => {
+
+  const orders = await Order.find(userId).populate("userId","-password").populate("products");
+  // const orders = await Order.find().populate("userId").populate("products");
+  return orders;
+};
 
 export const orderService = {
   createOrder,
-  // getOrders,
+  getOrders,
 };

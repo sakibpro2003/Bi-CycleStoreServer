@@ -9,6 +9,6 @@ const router = Router();
 router.post("/", auth(USER_ROLE.CUSTOMER), orderController.createOrder);
 
 // ✅ Both customers and admins can view orders
-// router.get("/", auth(USER_ROLE.ADMIN, USER_ROLE.CUSTOMER), orderController.getOrders);
+router.get("/", auth(USER_ROLE.ADMIN, USER_ROLE.CUSTOMER), orderController.getOrders);
 
 export default router;
