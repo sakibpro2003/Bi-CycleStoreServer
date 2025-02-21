@@ -10,7 +10,7 @@ const createUser = catchAsync(
 
     const result = await UserServices.createUserIntoDb(userData);
     const responseData = {
-      _id: result?._id,
+      _id: result?.email,
       name: result?.name,
       email: result?.email,
     };

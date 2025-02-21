@@ -1,6 +1,6 @@
 //NOTE: user constants
 export const USER_ROLE = {
-  USER: "user",
+  CUSTOMER: "customer",
   ADMIN: "admin",
 } as const;
 

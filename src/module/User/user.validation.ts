@@ -13,7 +13,7 @@ const userValidationSchema = z.object({
       invalid_type_error: "Must be string",
     })
     .max(16, { message: "Password cannot exceed 16 chars" }),
-  role: z.enum(["admin", "user"]),
+  role: z.enum(["admin", "customer"]),
   isBlocked: z.boolean().default(false),
 });
 

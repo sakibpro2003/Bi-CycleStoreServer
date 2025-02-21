@@ -1,8 +1,14 @@
 import { Router } from "express";
 import { orderController } from "./order.controller";
-import { orderService } from "./order.service";
-const orderRouter = Router();
-orderRouter.post('/',orderController.createOrder);
-// orderRouter.get('/revenue', orderController.getRevenue);
-orderRouter.get("/revenue", orderController.getRevenue);
-export default orderRouter;
+import auth from "../../app/middlewares/auth";
+import { USER_ROLE } from "../User/user.constant";
+
+const router = Router();
+
+// ✅ Only customers can create an order
+router.post("/", auth(USER_ROLE.CUSTOMER), orderController.createOrder);
+
+// ✅ Both customers and admins can view orders
+// router.get("/", auth(USER_ROLE.ADMIN, USER_ROLE.CUSTOMER), orderController.getOrders);
+
+export default router;

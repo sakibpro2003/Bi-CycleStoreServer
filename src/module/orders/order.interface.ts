@@ -1,12 +1,10 @@
 import { Types } from "mongoose";
 
-interface IOrder {
-  email: string;
-  product: string;
-  quantity: number;
+export type TOrder = {
+  userId: Types.ObjectId;
+  products: { productId: Types.ObjectId };
   totalPrice: number;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-
-export default IOrder;
+  quantity: number;
+  paymentMethod: "bKash | Nagad | Cash on Delivery | Card";
+  status: "Pending" | "Paid" | "Shipped" | "Completed" | "Cancelled";
+};

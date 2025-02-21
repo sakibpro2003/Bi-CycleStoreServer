@@ -8,7 +8,7 @@ import AppError from "../../../app/error/AppError";
 
 const loginUser = async (payload: TLoginUser) => {
   const user = await User.isUserExistsByCustomId(payload?.email);
-  const _id = (user?._id).toString();
+  // const email = (user?.email);
   if (!user) {
     throw new AppError(StatusCodes.NOT_FOUND, "User not found!");
   }
@@ -21,7 +21,7 @@ const loginUser = async (payload: TLoginUser) => {
     throw new AppError(httpStatus.UNAUTHORIZED, "Invalid credentials");
 
   const jwtPayload = {
-    _id: user?._id,
+    email: user?.email,
     role: user?.role,
   };
 
