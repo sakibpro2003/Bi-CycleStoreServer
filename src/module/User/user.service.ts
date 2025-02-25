@@ -22,6 +22,20 @@ const createUserIntoDb = async (userData: TUser) => {
   const result = await User.create(userData);
   return result;
 };
+const getAllUserFromDb = async () => {
+  const result = await User.find();
+  return result;
+};
+const changeUserStatusIntoDb = async (userId: string, isBlocked: boolean) => {
+  const result = await User.findByIdAndUpdate(
+    userId, 
+    { isBlocked },  // Update the isBlocked field
+    { new: true }  // Return the updated document
+  );
+
+  return result;
+};
+
 
 const changeUserPasswordIntoDb = async (
   email: string,
@@ -32,7 +46,7 @@ const changeUserPasswordIntoDb = async (
   if (!email) {
     return { success: false, message: "Unauthorized request. Email missing!" };
   }
-  console.log(oldPassword,newPassword,confirmPassword,'old,new,confirm')
+  console.log(oldPassword, newPassword, confirmPassword, "old,new,confirm");
 
   if (!oldPassword || !newPassword || !confirmPassword) {
     return { success: false, message: "All password fields are required!" };
@@ -63,4 +77,6 @@ const changeUserPasswordIntoDb = async (
 export const UserServices = {
   createUserIntoDb,
   changeUserPasswordIntoDb,
+  getAllUserFromDb,
+  changeUserStatusIntoDb,
 };
