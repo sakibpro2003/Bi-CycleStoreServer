@@ -25,6 +25,13 @@ const userSchema = new Schema<TUser, UserModel>(
       type: Boolean,
       default: false,
     },
+    phone: {
+      type: String,
+    },
+    gender: {
+      type: String,
+      enum: ["Male", "Female", "Non-Binary", "Other", "Prefer Not to Say"],
+    },
   },
   {
     timestamps: true,

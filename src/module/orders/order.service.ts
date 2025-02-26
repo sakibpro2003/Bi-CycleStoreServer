@@ -11,54 +11,52 @@ const createOrder = async (payload: OrderPayload) => {
     throw new AppError(httpStatus.NOT_ACCEPTABLE, "Order is not specified");
   }
 
-  const getProductId = payload.products;
-  const payloadQuantity = payload.quantity;
-  const paymentMethod = payload.paymentMethod;
-  const phone = payload.phone;
-  const address = payload.address;
-  const getProduct = await Product.findById(getProductId);
+  const getProduct = await Product.findById(payload.products);
   if (!getProduct) {
     throw new AppError(httpStatus.NOT_FOUND, "Product not found");
   }
 
-  const availableQuantity = getProduct?.quantity as Number;
-  if (payloadQuantity > availableQuantity) {
+  if (payload.quantity > getProduct.quantity) {
     throw new AppError(
       httpStatus.CONFLICT,
-      `${availableQuantity} products in stock. But you have ordered ${payload.quantity}`
+      `${getProduct.quantity} products in stock. But you ordered ${payload.quantity}`
     );
   }
 
-  const order = await Order.create({
-    userId: payload.userId,
-    products: payload.products,
-    totalPrice: payload.totalPrice,
-    quantity: payload.quantity,
-    paymentMethod: paymentMethod,
-    phone: payload.phone,
-    address: payload.address,
-  });
+  const order = await Order.create(payload);
 
-  if (getProduct) {
-    getProduct.quantity -= payload.quantity as number;
-  }
-
-  if (getProduct.quantity === 0) {
-    getProduct.inStock = false;
-  }
-  await getProduct?.save();
+  getProduct.quantity -= payload.quantity;
+  getProduct.inStock = getProduct.quantity > 0;
+  await getProduct.save();
 
   return order;
 };
 
-const getOrders = async (userId:ObjectId) => {
+const getOrders = async (userId: ObjectId) => {
+  return await Order.find(userId).populate("userId", "-password").populate("products");
+};
 
-  const orders = await Order.find(userId).populate("userId","-password").populate("products");
-  // const orders = await Order.find().populate("userId").populate("products");
-  return orders;
+const getAllOrdersFromDb = async () => {
+  return await Order.find().populate("userId", "-password").populate("products");
+};
+
+const deleteOrderFromDb = async (orderId: string) => {
+  return await Order.findByIdAndDelete(orderId);
+};
+
+const changeOrderStatusIntoDb = async (orderId: string, status: string) => {
+  return await Order.findByIdAndUpdate(
+    orderId,
+    { status },
+    { new: true, runValidators: true }
+  );
 };
 
 export const orderService = {
   createOrder,
   getOrders,
+  getAllOrdersFromDb,
+  deleteOrderFromDb,
+  changeOrderStatusIntoDb, 
 };
+

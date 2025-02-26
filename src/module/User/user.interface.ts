@@ -8,6 +8,8 @@ export interface TUser extends JwtPayload {
   password: string;
   role: "admin" | "customer";
   isBlocked: boolean;
+  phone: string;
+  gender: string;
 }
 
 export interface UserModel extends Model<TUser> {

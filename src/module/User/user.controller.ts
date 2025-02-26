@@ -1,53 +1,31 @@
-// import { NextFunction, Request, Response } from "express";
-// import { UserServices } from "./user.service";
-// import httpStatus from "http-status";
-// import catchAsync from "../../app/utils/catchAsync";
-// import sendResponse from "../../app/utils/sendResponse";
 
-// const createUser = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const userData = req.body;
-
-//     const result = await UserServices.createUserIntoDb(userData);
-//     const responseData = {
-//       _id: result?.email,
-//       name: result?.name,
-//       email: result?.email,
-//     };
-//     sendResponse(res, {
-//       statusCode: httpStatus.CREATED,
-//       success: true,
-//       message: "User registered successfully",
-//       data: responseData,
-//     });
-//   }
-// );
-
-// // Change Password
-// const changePassword = catchAsync(async (req: Request, res: Response) => {
-//     const { oldPassword, newPassword } = req.body;
-//     const email = req?.user?.email;
-
-// });
-
-// export const UserController = {
-//   createUser,
-//   changePassword,
-// };
-//!.............
 import { NextFunction, Request, Response } from "express";
 import { UserServices } from "./user.service";
 import httpStatus from "http-status";
 import catchAsync from "../../app/utils/catchAsync";
 import sendResponse from "../../app/utils/sendResponse";
+import { User } from "./user.model";
+import AppError from "../../app/error/AppError";
 
 const createUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const userData = req.body;
+    const email = userData.email;
+    const phone = userData.phone;
+    console.log(email,"pay email")
+    const findUser = await User.findOne({email});
+    const findUserByPhone = await User.findOne({phone});
+    if(findUser){
+      throw new AppError(httpStatus.UNAUTHORIZED,"Email already used");
+    }
+    if(findUserByPhone){
+      throw new AppError(httpStatus.UNAUTHORIZED,"Phone number already used");
+    }
+
 
     const result = await UserServices.createUserIntoDb(userData);
     const responseData = {
-      _id: result?.email,
+      _id: result?._id,
       name: result?.name,
       email: result?.email,
     };

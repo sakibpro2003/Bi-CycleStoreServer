@@ -3,8 +3,10 @@ import Product from "./product.model";
 import { userService } from "./product.service";
 
 const createProduct = async (req: Request, res: Response) => {
+  // console.log(object)
   try {
     const payload = req.body;
+    console.log(payload)
     const result = await userService.createProduct(payload);
     res.json({
       message: "success fully create",
@@ -15,7 +17,6 @@ const createProduct = async (req: Request, res: Response) => {
       status: false,
       message: "somthing went wrong",
       error,
-      
     });
   }
 };
@@ -36,7 +37,7 @@ const getProduct = async (req: Request, res: Response) => {
     });
   }
 };
-const getSingleProduct = async (req: Request, res: Response):Promise<any> => {
+const getSingleProduct = async (req: Request, res: Response): Promise<any> => {
   try {
     const productId = req.params.productId;
     const result = await userService.getSingleProduct(productId);
@@ -53,7 +54,7 @@ const getSingleProduct = async (req: Request, res: Response):Promise<any> => {
       status: true,
       data: result,
     });
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(500).json({
       status: false,
       message: "Something went wrong",
@@ -62,12 +63,11 @@ const getSingleProduct = async (req: Request, res: Response):Promise<any> => {
   }
 };
 
-const updateProduct = async (req: Request, res: Response):Promise<any> => {
+const updateProduct = async (req: Request, res: Response): Promise<any> => {
   try {
     const productToUpdate = req.params.productId;
     const resultToUpdate = await userService.getSingleProduct(productToUpdate);
     if (!resultToUpdate) {
-     
       return res.status(404).json({
         status: false,
         message: "Bike not found",
@@ -75,7 +75,7 @@ const updateProduct = async (req: Request, res: Response):Promise<any> => {
     }
     const productId = req.params.productId;
     const data = req.body;
-    const result = await userService.updateProduct(productId,data);
+    const result = await userService.updateProduct(productId, data);
     res.json({
       message: "Bicycle updated successfully",
       data: result,
@@ -91,6 +91,7 @@ const updateProduct = async (req: Request, res: Response):Promise<any> => {
 const deleteProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.productId;
+    // console.log(object)
     const result = await userService.deleteProduct(productId);
     res.json({
       message: "Bicycle deleted successfully",
@@ -105,7 +106,6 @@ const deleteProduct = async (req: Request, res: Response) => {
     });
   }
 };
-
 
 export const productController = {
   createProduct,
