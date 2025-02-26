@@ -37,6 +37,39 @@ const createUser = catchAsync(
     });
   }
 );
+const updateUserInfo = catchAsync(async (req: Request, res: Response) => {
+  const {  ...userPayload } = req.body;
+  const _id = req.params;
+  
+
+  if (!_id) {
+    throw new AppError(httpStatus.BAD_REQUEST, "User ID is required");
+  }
+
+  const result = await UserServices.updateUserInfoIntoDb(_id, userPayload);
+
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found or update failed");
+  }
+
+  const responseData = {
+    _id: result._id,
+    name: result.name,
+    email: result.email,
+    phone: result.phone,
+    gender: result.gender,
+  };
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User information updated successfully",
+    data: responseData,
+  });
+});
+
+    
+
 const getAllUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     // const userData = req.body;
@@ -116,6 +149,6 @@ const changePassword = catchAsync(async (req: Request, res: Response) => {
 
 export const UserController = {
   changePassword,
-  createUser,
+  createUser,updateUserInfo,
   getAllUser,changeUserStatus
 };

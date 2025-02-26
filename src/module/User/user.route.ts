@@ -11,5 +11,10 @@ router.put(
   auth(USER_ROLE.ADMIN),
   UserController.changeUserStatus
 );
+router.put(
+  `/change-user-info/:_id`,
+  auth(USER_ROLE.CUSTOMER),
+  UserController.updateUserInfo
+);
 
 export const UserRoutes = router;

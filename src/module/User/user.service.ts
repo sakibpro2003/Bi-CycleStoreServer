@@ -1,25 +1,14 @@
-// import config from "../../config";
-// import { TUser } from "./user.interface";
-// import { User } from "./user.model";
-// import bcrypt from "bcrypt";
 
-// const createUserIntoDb = async (userData: TUser) => {
-//   const result = await User.create(userData);
-//   return result;
-// };
-
-// export const UserServices = {
-//   createUserIntoDb,
-//   changeUserPasswordIntoDb,
-// };
-
-//!..............
 import { TUser } from "./user.interface";
 import { User } from "./user.model";
 import bcrypt from "bcrypt";
 
 const createUserIntoDb = async (userData: TUser) => {
   const result = await User.create(userData);
+  return result;
+};
+const updateUserInfoIntoDb = async (_id: string, userData: Partial<TUser>) => {
+  const result = await User.findByIdAndUpdate(_id, userData, { new: true });
   return result;
 };
 const getAllUserFromDb = async () => {
@@ -78,5 +67,5 @@ export const UserServices = {
   createUserIntoDb,
   changeUserPasswordIntoDb,
   getAllUserFromDb,
-  changeUserStatusIntoDb,
+  changeUserStatusIntoDb,updateUserInfoIntoDb
 };
