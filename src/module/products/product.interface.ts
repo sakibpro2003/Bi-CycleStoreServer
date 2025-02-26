@@ -5,7 +5,7 @@ interface IProduct extends Document {
   price: number;
   type: string;
   description: string;
-  quantity: number;
+  quantity: any;
   inStock: boolean;
   createdAt?: Date;
   updatedAt?: Date; 

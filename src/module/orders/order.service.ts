@@ -32,9 +32,12 @@ const createOrder = async (payload: OrderPayload) => {
   return order;
 };
 
-const getOrders = async (userId: ObjectId) => {
-  return await Order.find(userId).populate("userId", "-password").populate("products");
+const getOrders = async ({ userId }: { userId?: string }) => {
+  return await Order.find({userId}).populate("userId", "-password").populate("products");
 };
+// const getOrders = async (userId?: string) => {
+//   return await Order.find(userId).populate("userId", "-password").populate("products");
+// };
 
 const getAllOrdersFromDb = async () => {
   return await Order.find().populate("userId", "-password").populate("products");

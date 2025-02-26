@@ -18,8 +18,8 @@ const getAllUserFromDb = async () => {
 const changeUserStatusIntoDb = async (userId: string, isBlocked: boolean) => {
   const result = await User.findByIdAndUpdate(
     userId, 
-    { isBlocked },  // Update the isBlocked field
-    { new: true }  // Return the updated document
+    { isBlocked },  
+    { new: true }  
   );
 
   return result;

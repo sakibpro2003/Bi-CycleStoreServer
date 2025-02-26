@@ -1,4 +1,3 @@
-
 import { NextFunction, Request, Response } from "express";
 import { UserServices } from "./user.service";
 import httpStatus from "http-status";
@@ -12,16 +11,15 @@ const createUser = catchAsync(
     const userData = req.body;
     const email = userData.email;
     const phone = userData.phone;
-    console.log(email,"pay email")
-    const findUser = await User.findOne({email});
-    const findUserByPhone = await User.findOne({phone});
-    if(findUser){
-      throw new AppError(httpStatus.UNAUTHORIZED,"Email already used");
+    console.log(email, "pay email");
+    const findUser = await User.findOne({ email });
+    const findUserByPhone = await User.findOne({ phone });
+    if (findUser) {
+      throw new AppError(httpStatus.UNAUTHORIZED, "Email already used");
     }
-    if(findUserByPhone){
-      throw new AppError(httpStatus.UNAUTHORIZED,"Phone number already used");
+    if (findUserByPhone) {
+      throw new AppError(httpStatus.UNAUTHORIZED, "Phone number already used");
     }
-
 
     const result = await UserServices.createUserIntoDb(userData);
     const responseData = {
@@ -38,15 +36,21 @@ const createUser = catchAsync(
   }
 );
 const updateUserInfo = catchAsync(async (req: Request, res: Response) => {
-  const {  ...userPayload } = req.body;
-  const _id = req.params;
-  
+  const { ...userPayload } = req.body;
+
+  const user = req.user;
+
+  const email = user?.email;
+  console.log(email)
+  const findUser = await User.findOne({email})
+  console.log(findUser,"user")
+  const _id = findUser?._id;
 
   if (!_id) {
     throw new AppError(httpStatus.BAD_REQUEST, "User ID is required");
   }
 
-  const result = await UserServices.updateUserInfoIntoDb(_id, userPayload);
+  const result = await UserServices.updateUserInfoIntoDb(_id.toString(), userPayload);
 
   if (!result) {
     throw new AppError(httpStatus.NOT_FOUND, "User not found or update failed");
@@ -55,7 +59,7 @@ const updateUserInfo = catchAsync(async (req: Request, res: Response) => {
   const responseData = {
     _id: result._id,
     name: result.name,
-    email: result.email,
+    // email: result.email,
     phone: result.phone,
     gender: result.gender,
   };
@@ -67,8 +71,6 @@ const updateUserInfo = catchAsync(async (req: Request, res: Response) => {
     data: responseData,
   });
 });
-
-    
 
 const getAllUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -94,7 +96,7 @@ const changeUserStatus = catchAsync(
     console.log(`User ID: ${userId}, Block Status: ${isBlocked}`);
 
     const result = await UserServices.changeUserStatusIntoDb(userId, isBlocked);
-    
+
     if (!result) {
       return res.status(404).json({
         success: false,
@@ -110,7 +112,6 @@ const changeUserStatus = catchAsync(
     });
   }
 );
-
 
 const changePassword = catchAsync(async (req: Request, res: Response) => {
   const { oldPassword, newPassword, confirmPassword } = req.body;
@@ -149,6 +150,8 @@ const changePassword = catchAsync(async (req: Request, res: Response) => {
 
 export const UserController = {
   changePassword,
-  createUser,updateUserInfo,
-  getAllUser,changeUserStatus
+  createUser,
+  updateUserInfo,
+  getAllUser,
+  changeUserStatus,
 };

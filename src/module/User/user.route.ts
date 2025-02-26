@@ -12,7 +12,7 @@ router.put(
   UserController.changeUserStatus
 );
 router.put(
-  `/change-user-info/:_id`,
+  `/change-user-info`,
   auth(USER_ROLE.CUSTOMER),
   UserController.updateUserInfo
 );

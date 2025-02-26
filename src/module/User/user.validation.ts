@@ -7,17 +7,16 @@ const userValidationSchema = z.object({
   email: z.string({
     required_error: "Email is required",
   }),
-  phone: z
-  .string({
+  phone: z.string({
     required_error: "Phone number required",
-  })
-  .regex(/^(?:\+8801|01)[3-9]\d{8}$/, {
-    message: "Invalid Bangladeshi phone number. Must start with +8801 or 01 and be 11 digits.",
   }),
 
-  gender: z.enum(["Male", "Female", "Non-Binary", "Other", "Prefer Not to Say"], {
-    required_error: "Please provide your gender",
-  }),
+  gender: z.enum(
+    ["Male", "Female", "Non-Binary", "Other", "Prefer Not to Say"],
+    {
+      required_error: "Please provide your gender",
+    }
+  ),
   password: z
     .string({
       required_error: "Password is required",

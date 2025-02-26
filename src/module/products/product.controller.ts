@@ -3,7 +3,6 @@ import Product from "./product.model";
 import { userService } from "./product.service";
 
 const createProduct = async (req: Request, res: Response) => {
-  // console.log(object)
   try {
     const payload = req.body;
     console.log(payload)
@@ -91,7 +90,6 @@ const updateProduct = async (req: Request, res: Response): Promise<any> => {
 const deleteProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.productId;
-    // console.log(object)
     const result = await userService.deleteProduct(productId);
     res.json({
       message: "Bicycle deleted successfully",

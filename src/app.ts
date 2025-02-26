@@ -11,7 +11,6 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({ origin: "http://localhost:5173",credentials:true }));
-// API Routes
 app.use("/api", router);
 
 // 404 Not Found Middleware

@@ -11,13 +11,13 @@ const productSchema = new Schema<IProduct>(
       min: [0, "Price must be a positive number"],
     },
     type: {
-      type: String, 
+      type: String,
       required: true,
       trim: true,
       enum: {
         values: ["Mountain", "Road", "Hybrid", "BMX", "Electric"],
-        message: "{VALUE} is not a valid product type."
-      }
+        message: "{VALUE} is not a valid product type.",
+      },
     },
     description: { type: String, required: true, trim: true },
     quantity: {
@@ -30,7 +30,7 @@ const productSchema = new Schema<IProduct>(
   {
     timestamps: {
       createdAt: "created_at",
-      updatedAt: "updated_at", 
+      updatedAt: "updated_at",
     },
     collection: "Products",
   }

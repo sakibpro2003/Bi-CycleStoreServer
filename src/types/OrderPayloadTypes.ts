@@ -10,6 +10,6 @@ export type OrderPayload = {
   userId: Types.ObjectId | undefined;
   products: string;
   totalPrice: Number;
-  quantity: Number;
+  quantity: any;
   paymentMethod: PaymentMethod;
 };

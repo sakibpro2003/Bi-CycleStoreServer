@@ -8,7 +8,6 @@ import AppError from "../../../app/error/AppError";
 
 const loginUser = async (payload: TLoginUser) => {
   const user = await User.isUserExistsByCustomId(payload?.email);
-  // const email = (user?.email);
   if (!user) {
     throw new AppError(StatusCodes.NOT_FOUND, "User not found!");
   }

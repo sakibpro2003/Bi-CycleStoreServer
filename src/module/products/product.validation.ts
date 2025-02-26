@@ -14,7 +14,6 @@ export const ProductSchema = z.object({
   updated_at: z.date().optional(),
 });
 
-// Example validation usage
 const validateProduct = (data: unknown) => {
   const result = ProductSchema.safeParse(data);
   if (!result.success) {
