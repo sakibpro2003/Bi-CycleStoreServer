@@ -65,10 +65,9 @@ const deleteOrder = catchAsync(async (req: Request, res: Response) => {
 
 const changeOrderStatus = catchAsync(async (req: Request, res: Response) => {
   const orderId = req?.params?.orderId;
-  // console.log(orderId,'query')
-  // console.log(req.body,'body')
-  console.log(orderId, "iddddddddddddddddddddd");
+  // console.log(orderId, "iddddddddddddddddddddd");
   const { status } = req.body;
+  console.log(status)
 
   if (!orderId || !status) {
     return res.status(httpStatus.BAD_REQUEST).json({
@@ -107,5 +106,5 @@ export const orderController = {
   getOrders,
   getAllOrders,
   deleteOrder,
-  changeOrderStatus, // Added to the export list
+  changeOrderStatus,
 };

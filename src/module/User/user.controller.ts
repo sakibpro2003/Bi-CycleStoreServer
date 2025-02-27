@@ -41,6 +41,7 @@ const updateUserInfo = catchAsync(async (req: Request, res: Response) => {
   const user = req.user;
 
   const email = user?.email;
+  userPayload.email = email;
   console.log(email)
   const findUser = await User.findOne({email})
   console.log(findUser,"user")

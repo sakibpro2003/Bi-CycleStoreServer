@@ -10,7 +10,16 @@ app.use(express.json());
 
 app.use(cookieParser());
 
-app.use(cors({ origin: "http://localhost:5173",credentials:true }));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://bi-cycle-store-client-red.vercel.app",
+    ],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use("/api", router);
 
 // 404 Not Found Middleware
@@ -19,7 +28,6 @@ app.use("*", notFound);
 app.use((err: any, req: Request, res: Response, next: express.NextFunction) => {
   globalErrorHandler(err, req, res, next);
 });
-
 
 // Root Route
 app.get("/", (req: Request, res: Response) => {

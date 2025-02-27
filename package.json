@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+  
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "build":"npx tsc",
     "lint": "npx eslint src --ignore-pattern '.js,.ts'",
     "lint:fix": "npx eslint src --fix",
     "format": "npx prettier --ignore-path .prettierignore --write \"**/*.{js,ts,json}\"",
