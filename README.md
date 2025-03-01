@@ -62,9 +62,13 @@ npm install
 
 ## .env
 PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-STRIPE_SECRET_KEY=your_stripe_secret_key
+DATABASE_URL="your mongodb url"
+BCRYPT_SALT_ROUNDS=12
+JWT_ACCESS_SECRET="jwt secret"
+SP_ENDPOINT=https://sandbox.shurjopayment.com
+SP_USERNAME="your surjopay username"
+SP_PASSWORD="your surjopay password"
+SP_PREFIX=SP
 
 ## Run the server
 npm run dev
