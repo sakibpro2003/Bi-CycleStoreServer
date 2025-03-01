@@ -60,7 +60,8 @@ The **Bi-Cycle Store Backend** is a robust RESTful API built with **Node.js, Exp
 
 npm install
 
-## .env
+- Create a **.env** file and configure the following:
+```env
 PORT=5000
 DATABASE_URL="your mongodb url"
 BCRYPT_SALT_ROUNDS=12
@@ -69,6 +70,8 @@ SP_ENDPOINT=https://sandbox.shurjopayment.com
 SP_USERNAME="your surjopay username"
 SP_PASSWORD="your surjopay password"
 SP_PREFIX=SP
+```
+
 
 ## Run the server
 npm run dev
