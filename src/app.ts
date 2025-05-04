@@ -22,7 +22,7 @@ app.use(
 );
 app.use("/api", router);
 
-// 404 Not Found Middleware
+//Not Found Middleware
 app.use("*", notFound);
 
 app.use((err: any, req: Request, res: Response, next: express.NextFunction) => {

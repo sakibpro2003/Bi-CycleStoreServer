@@ -11,7 +11,6 @@ const createUser = catchAsync(
     const userData = req.body;
     const email = userData.email;
     const phone = userData.phone;
-    console.log(email, "pay email");
     const findUser = await User.findOne({ email });
     const findUserByPhone = await User.findOne({ phone });
     if (findUser) {
@@ -42,16 +41,17 @@ const updateUserInfo = catchAsync(async (req: Request, res: Response) => {
 
   const email = user?.email;
   userPayload.email = email;
-  console.log(email)
-  const findUser = await User.findOne({email})
-  console.log(findUser,"user")
+  const findUser = await User.findOne({ email });
   const _id = findUser?._id;
 
   if (!_id) {
     throw new AppError(httpStatus.BAD_REQUEST, "User ID is required");
   }
 
-  const result = await UserServices.updateUserInfoIntoDb(_id.toString(), userPayload);
+  const result = await UserServices.updateUserInfoIntoDb(
+    _id.toString(),
+    userPayload
+  );
 
   if (!result) {
     throw new AppError(httpStatus.NOT_FOUND, "User not found or update failed");
@@ -60,7 +60,6 @@ const updateUserInfo = catchAsync(async (req: Request, res: Response) => {
   const responseData = {
     _id: result._id,
     name: result.name,
-    // email: result.email,
     phone: result.phone,
     gender: result.gender,
   };
@@ -75,14 +74,7 @@ const updateUserInfo = catchAsync(async (req: Request, res: Response) => {
 
 const getAllUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    // const userData = req.body;
-
     const result = await UserServices.getAllUserFromDb();
-    // const responseData = {
-    //   _id: result?.email,
-    //   name: result?.name,
-    //   email: result?.email,
-    // };
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
@@ -94,10 +86,7 @@ const getAllUser = catchAsync(
 const changeUserStatus = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { userId, isBlocked } = req.body;
-    console.log(`User ID: ${userId}, Block Status: ${isBlocked}`);
-
     const result = await UserServices.changeUserStatusIntoDb(userId, isBlocked);
-
     if (!result) {
       return res.status(404).json({
         success: false,
@@ -117,7 +106,6 @@ const changeUserStatus = catchAsync(
 const changePassword = catchAsync(async (req: Request, res: Response) => {
   const { oldPassword, newPassword, confirmPassword } = req.body;
   const email = req?.user?.email;
-  console.log(confirmPassword, "confirm pass from controller");
 
   if (!email) {
     return sendResponse(res, {

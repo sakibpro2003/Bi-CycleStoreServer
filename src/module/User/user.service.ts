@@ -35,7 +35,6 @@ const changeUserPasswordIntoDb = async (
   if (!email) {
     return { success: false, message: "Unauthorized request. Email missing!" };
   }
-  console.log(oldPassword, newPassword, confirmPassword, "old,new,confirm");
 
   if (!oldPassword || !newPassword || !confirmPassword) {
     return { success: false, message: "All password fields are required!" };
@@ -58,7 +57,6 @@ const changeUserPasswordIntoDb = async (
 
   const hashedPassword = await bcrypt.hash(newPassword, 12);
   await User.updateOne({ email }, { $set: { password: hashedPassword } });
-  // await user.save();
 
   return { success: true, message: "Password changed successfully!" };
 };
