@@ -4,7 +4,7 @@ export const ProductSchema = z.object({
   name: z.string().min(1, "Name is required").trim(),
   brand: z.string().min(1, "Brand is required").trim(),
   price: z.number().min(0, "Price must be a positive number"),
-  type: z.enum(["Mountain", "Road", "Hybrid", "BMX", "Electric"], {
+  type: z.enum(["Mountain", "Road", "Hybrid", "BMX", "Electric","Baby"], {
     errorMap: () => ({ message: "Invalid product type" }),
   }),
   description: z.string().min(1, "Description is required").trim(),

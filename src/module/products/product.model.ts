@@ -5,6 +5,7 @@ const productSchema = new Schema<IProduct>(
   {
     name: { type: String, required: true, trim: true },
     brand: { type: String, required: true, trim: true },
+    image:{type:String},
     price: {
       type: Number,
       required: true,
@@ -19,7 +20,7 @@ const productSchema = new Schema<IProduct>(
       required: true,
       trim: true,
       enum: {
-        values: ["Mountain", "Road", "Hybrid", "BMX", "Electric"],
+        values: ["Mountain", "Road", "Hybrid", "BMX", "Electric","Baby"],
         message: "{VALUE} is not a valid product type.",
       },
     },
